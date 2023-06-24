@@ -4,5 +4,4 @@ export interface IManager {
   totalMoney: string;
   totalSpent: string;
   image: string;
-  transferHistory: string[];
 }

@@ -3,6 +3,7 @@ import {
   createPlayerToDB,
   getAllPlayers,
   getPlayerByIdFromDB,
+  updatePlayerById,
 } from './player.service';
 import Player from './player.model';
 import multer, { diskStorage, Multer } from 'multer';
@@ -38,15 +39,24 @@ export const createPlayer = async (
 ) => {
   // console.log('createPlayer controller: ', req);
   // console.log('req.file: ' , req.file)
-  let { name, type, position, rating } = req.body;
+  let { name, type, position, rating, price, club, clubOwner } = req.body;
   let image = req.file?.filename;
   let data: IPlayer;
 
-  const player = await createPlayerToDB({name, type, position, rating, image});
+  const player = await createPlayerToDB({
+    name,
+    type,
+    position,
+    rating,
+    price,
+    club,
+    clubOwner,
+    image,
+  });
 
   res.status(200).json({
     status: 'success',
-    message: 'Player created successfully',
+    message: `${player?.name} added successfully`,
     data: player,
   });
   //inserting data
@@ -72,12 +82,41 @@ export const getPlayerById = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
+  console.log('id: ', id);
   const player = await getPlayerByIdFromDB(id);
-  res.status(200).json({
-    status: 'success',
-    data: player,
-  });
+  if (player) {
+    res.status(200).json({
+      status: 'success',
+      message: `Data found for id: ${id}`, 
+      data: player,
+    });
+  } else {
+    res.status(404).json({ message: `Data not found for id: ${id}` })
+  }
   //inserting data
   //interface  > schema > model > query
   //res.send('Hello World!');
 };
+
+export const updatePlayer = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const updatedInfo = req.body;
+
+  const player = await updatePlayerById(id , updatedInfo);
+
+  if (player) {
+    res.status(200).json({
+      status: 'success',
+      message: `Data updated for id: ${id}`, 
+      data: player,
+    });
+  } else {
+    res.status(404).json({ message: `Data failed to update  for id: ${id}` })
+  }
+};
+
+

@@ -1,7 +1,11 @@
 import express from 'express';
 import multer, { diskStorage, Multer } from 'multer';
-import { createManager } from './manager.controller';
-
+import {
+  createManager,
+  getAllManager,
+  getManagerById,
+  updateManager,
+} from './manager.controller';
 
 const storage = diskStorage({
   destination: (
@@ -9,24 +13,28 @@ const storage = diskStorage({
     file,
     cb: (error: Error | null, destination: string) => void
   ) => {
-    cb(null, 'manager/');
+    cb(null, 'uploads/');
   },
   filename: (
     req: Request,
     file,
     cb: (error: Error | null, filename: string) => void
   ) => {
-    console.log('file: ' , file)
+    console.log('file: ', file);
     cb(null, Date.now() + '-' + file.originalname);
   },
 });
 
 const upload = multer({
-  dest: 'manager/',
-  storage
+  dest: 'uploads/',
+  storage,
 });
 
 const router = express.Router();
-router.post('/create-manager', upload.single('image'), createManager);
+
+router.get('/manager/get-all-manager', getAllManager);
+router.get('/manager/:id', getManagerById);
+router.post('/manager/create-manager', upload.single('image'), createManager);
+router.put('/manager/:id', updateManager);
 
 export default router;

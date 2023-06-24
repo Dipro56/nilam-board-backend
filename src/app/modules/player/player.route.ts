@@ -1,5 +1,10 @@
 import express from 'express';
-import { createPlayer, getAllPlayer, getPlayerById } from './player.controller';
+import {
+  createPlayer,
+  getAllPlayer,
+  getPlayerById,
+  updatePlayer,
+} from './player.controller';
 import multer, { diskStorage, Multer } from 'multer';
 
 const storage = diskStorage({
@@ -15,24 +20,25 @@ const storage = diskStorage({
     file,
     cb: (error: Error | null, filename: string) => void
   ) => {
-    console.log('file: ' , file)
+    console.log('file: ', file);
     cb(null, Date.now() + '-' + file.originalname);
   },
 });
 
 const upload = multer({
-  dest: 'uploads/',// Specify the destination folder for uploaded files
-  storage
+  dest: 'uploads/', // Specify the destination folder for uploaded files
+  storage,
 });
 
 const router = express.Router();
-router.get('/', getAllPlayer);
-router.get('/:id', getPlayerById);
+router.get('/player/get-all-player', getAllPlayer);
+router.get('/player/:id', getPlayerById);
+router.post('/player/create-player', upload.single('image'), createPlayer);
+router.put('/player/:id', updatePlayer);
+
 // router.post('/create-player', upload.single('image'), (req, res) => {
 //   console.log(req.file)
 //    console.log(req.body)
 //   res.send('req successfully sent')
 // });
-router.post('/create-player', upload.single('image'), createPlayer);
-//createPlayer
 export default router;

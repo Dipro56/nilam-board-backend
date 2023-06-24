@@ -3,5 +3,8 @@ export interface IPlayer {
   type: string;
   position: string;
   rating: string;
+  price: string;
+  club: string;
+  clubOwner: string;
   image: string;
 }

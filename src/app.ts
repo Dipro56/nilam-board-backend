@@ -9,7 +9,7 @@ const app: Application = express();
 //Application route
 import playerRoute from './app/modules/player/player.route';
 import managerRoute from './app/modules/manager/manager.route';
-
+import transferRoute from './app/modules/transfer/transfer.route';
 
 import bodyParser from 'body-parser';
 
@@ -48,9 +48,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'))
-app.use('/manager', express.static('manager'))
+// app.use('/manager', express.static('manager'))
 app.use('/api/v1', playerRoute);
 app.use('/api/v1', managerRoute);
+app.use('/api/v1' , transferRoute)
 
 
 //interface  > schema > model > query

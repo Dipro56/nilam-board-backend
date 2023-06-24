@@ -7,7 +7,6 @@ const managerSchema = new Schema<IManager>({
   totalMoney: { type: String, required: true },
   totalSpent: { type: String, required: true },
   image: { type: String, required: true },
-  transferHistory: { type: [String] },
 });
 
 const Manager = model<IManager>('Manager', managerSchema);

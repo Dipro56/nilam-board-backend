@@ -14,6 +14,10 @@ dotenv.config({
 //   console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
 // });
 
+app.get("/", (req, res) => {
+  res.send(` <p>Welcome to Nilam Board</p>`);
+});
+
 connectDB()
   .then(() => {
     app.listen(process.env.PORT || 8000, () => {

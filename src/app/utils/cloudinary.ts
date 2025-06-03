@@ -8,8 +8,8 @@ import fs from "fs";
 // });
 
 cloudinary.config({
-  cloud_name: 'ds9dpn3nn', 
-  api_key: '842873932927665',
+  cloud_name: "ds9dpn3nn",
+  api_key: "842873932927665",
   api_secret: "fL-QejBAMau7lLbPLFUWW2lRvTw",
 });
 
@@ -21,6 +21,8 @@ const uploadOnCloudinary = async (localFilePath: any) => {
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
     });
+
+    console.log("responseresponse", response);
     // file has been uploaded successfull
     //console.log("file is uploaded on cloudinary ", response.url);
     fs.unlinkSync(localFilePath);

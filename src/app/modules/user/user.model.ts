@@ -1,6 +1,7 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { IUser } from "./user.interface";
 
 const userSchema = new Schema(
   {
@@ -47,4 +48,6 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 
-export const User = mongoose.model("User", userSchema);
+const User = model<IUser>("User", userSchema);
+
+export default User;

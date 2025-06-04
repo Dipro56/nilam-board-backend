@@ -7,14 +7,11 @@ import {
   updatePlayerById,
 } from "./player.service";
 import Player from "./player.model";
-import multer, { diskStorage, Multer } from "multer";
 import { IPlayer } from "./player.interface";
 import { uploadOnCloudinary } from "../../utils/cloudinary";
 import { ApiError } from "../../utils/ApiError";
 
-export interface MulterRequest extends Request {
-  file: multer.File;
-}
+
 
 export const createPlayer = async (
   req: any,

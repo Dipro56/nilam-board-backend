@@ -29,6 +29,10 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
+  if (!this.password) {
+    return next(new Error("Password is missing"));
+  }
+
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
@@ -44,7 +48,7 @@ userSchema.methods.generateAccessToken = function () {
       _id: this._id,
       username: this.username,
     },
-    process.env.ACCESS_TOKEN_SECRET
+    process.env.ACCESS_TOKEN_SECRET as string
   );
 };
 

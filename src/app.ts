@@ -1,6 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
-import multer, { diskStorage, Multer } from "multer";
+
 
 const app: Application = express();
 

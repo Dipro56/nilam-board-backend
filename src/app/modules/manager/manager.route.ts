@@ -1,5 +1,4 @@
 import express from "express";
-import multer, { diskStorage, Multer } from "multer";
 import {
   createManager,
   getAllManager,

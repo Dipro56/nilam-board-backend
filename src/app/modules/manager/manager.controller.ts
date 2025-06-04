@@ -1,5 +1,4 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-import multer, { diskStorage, Multer } from "multer";
 import {
   createManagerToDB,
   getAllManagers,
@@ -9,9 +8,7 @@ import {
 import { uploadOnCloudinary } from "../../utils/cloudinary";
 import { ApiError } from "../../utils/ApiError";
 
-export interface MulterRequest extends Request {
-  file: multer.File;
-}
+
 
 export const createManager = async (
   req: any,

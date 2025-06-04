@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "../utils/asyncHandler";
 import User from "../modules/user/user.model";
@@ -14,15 +14,20 @@ export const verifyJWT = asyncHandler(async (req: any, _, next) => {
       throw new ApiError(401, "Unauthorized request");
     }
 
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const decodedToken = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET as string
+    );
 
     let user;
-    if (decodedToken?._id) {
+    if (
+      decodedToken &&
+      typeof decodedToken !== "string" &&
+      "_id" in decodedToken
+    ) {
       user = await User.findById(decodedToken?._id).select(
         "-password -refreshToken -createdAt -updatedAt -__v"
       );
-    } else {
-      user = await User.find({ phone: decodedToken?.phone });
     }
 
     if (!user) {
@@ -34,7 +39,7 @@ export const verifyJWT = asyncHandler(async (req: any, _, next) => {
     req.user = user;
     next();
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid access token");
+    throw new ApiError(401, "Invalid access token for user");
   }
 });
 
@@ -49,11 +54,21 @@ export const verifyAdmin = asyncHandler(async (req: any, _, next) => {
       throw new ApiError(401, "Unauthorized request");
     }
 
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-    const user = await User.findById(decodedToken?._id).select(
-      "-password -refreshToken -createdAt -updatedAt -__v"
+    const decodedToken = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET as string
     );
+
+    let user;
+    if (
+      decodedToken &&
+      typeof decodedToken !== "string" &&
+      "_id" in decodedToken
+    ) {
+      user = await User.findById((decodedToken as JwtPayload)._id).select(
+        "-password -refreshToken -createdAt -updatedAt -__v"
+      );
+    }
 
     if (!user) {
       throw new ApiError(401, "Invalid Access Token");
@@ -64,6 +79,6 @@ export const verifyAdmin = asyncHandler(async (req: any, _, next) => {
     req.user = user;
     next();
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid access token");
+    throw new ApiError(401, "Invalid access token for admin");
   }
 });

@@ -6,7 +6,6 @@ import {
   getPlayerById,
   updatePlayer,
 } from "./player.controller";
-import multer, { diskStorage, Multer } from "multer";
 import { verifyAdmin } from "../../middlewares/auth.middelware";
 import { upload } from "../../middlewares/multer.middleware";
 

@@ -6,7 +6,7 @@ import {
   getManagerById,
   updateManager,
 } from "./manager.controller";
-import { verifyJWT } from "../../middlewares/auth.middelware";
+import { verifyAdmin, verifyJWT } from "../../middlewares/auth.middelware";
 import { upload } from "../../middlewares/multer.middleware";
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.get("/manager/get-all-manager", getAllManager);
 router.get("/manager/:id", getManagerById);
 router.post(
   "/manager/create-manager",
-  verifyJWT,
+  verifyAdmin,
   upload.fields([
     {
       name: "image",

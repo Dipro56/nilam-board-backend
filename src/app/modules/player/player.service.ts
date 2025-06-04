@@ -1,8 +1,7 @@
-import { IPlayer } from './player.interface';
-import Player from './player.model';
+import { IPlayer } from "./player.interface";
+import Player from "./player.model";
 
 export const createPlayerToDB = async (payload: IPlayer): Promise<IPlayer> => {
-
   const player = new Player(payload);
 
   await player.save();
@@ -10,7 +9,7 @@ export const createPlayerToDB = async (payload: IPlayer): Promise<IPlayer> => {
 };
 
 export const getAllPlayers = async () => {
-  const players = await Player.find().sort({ rating: -1 , name: 1});
+  const players = await Player.find().sort({ rating: -1, name: 1 });
   return players;
 };
 
@@ -25,9 +24,14 @@ export const updatePlayerById = async (
   payload: string,
   updatedInfo: IPlayer
 ): Promise<IPlayer | null> => {
-  const player = await Player.findByIdAndUpdate({ _id: payload }, updatedInfo, { new: true });
-  
-  console.log('updated player: ' , player)
+  const player = await Player.findByIdAndUpdate({ _id: payload }, updatedInfo, {
+    new: true,
+  });
+
+  console.log("updated player: ", player);
   return player;
 };
 
+export const deletePlayerById = async (id: string) => {
+  return await Player.findByIdAndDelete(id);
+};
